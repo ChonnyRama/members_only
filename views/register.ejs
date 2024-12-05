@@ -11,22 +11,43 @@
 
 <body>
   <h1>Sign up now!</h1>
-  <form action="/register" method="post">
-    <label for="username">Username
-      <input type="text" name="username" id="username">
-    </label>
-    <label for="first-name">First Name
-      <input type="text" name="first-name" id="first-name">
-    </label>
-    <label for="last-name">Last Name
-      <input type="text" name="last-name" id="last-name">
-    </label>
-    <label for="password">
-      Password
-      <input type="password" name="password" id="password">
-    </label>
-    <button type="submit">Submit</button>
-  </form>
+
+  <% if (errors && errors.length> 0) { %>
+    <div class="error">
+      <ul>
+        <% errors.forEach((error)=> { %>
+          <li>
+            <%= error.param %>: <%= error.msg %>
+          </li>
+          <% }) %>
+      </ul>
+    </div>
+    <% } %>
+
+      <form action="/register" method="post">
+        <label for="username">Username
+          <input type="text" name="username" id="username">
+        </label>
+        <label for="email">
+          Email
+          <input type="email" name="email" id="email">
+        </label>
+        <label for="firstName">First Name
+          <input type="text" name="firstName" id="firstName">
+        </label>
+        <label for="lastName">Last Name
+          <input type="text" name="lastName" id="lastName">
+        </label>
+        <label for="password">
+          Password
+          <input type="password" name="password" id="password">
+        </label>
+        <label for="confirmPassword">
+          Confirm Password
+          <input type="password" name="confirmPassword" id="confirmPassword">
+        </label>
+        <button type="submit">Submit</button>
+      </form>
 
 </body>
 

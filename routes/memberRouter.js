@@ -3,8 +3,8 @@ const memberController = require('../controllers/memberController')
 
 const memberRouter = Router()
 
-memberRouter.get('/', memberController.getIndex)
-memberRouter.get('/register', memberController.getSignup)
-memberRouter.post('/register', memberController.postSignup)
+memberRouter.get('/', memberController.memberIndexGet)
+memberRouter.get('/register', memberController.memberSignupGet)
+memberRouter.post('/register', memberController.memberSignupPost)
 
 module.exports = memberRouter
