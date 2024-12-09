@@ -4,14 +4,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="register.css">
   <title>Document</title>
 </head>
 
 <body>
   <h1>Members Only!</h1>
-  <span><a href="/register">Click here</a> to sign up</span>
-  <hr>
-  <span><a href="/login">Click here</a> to log in</span>
+  <% if (user) { %>
+    <h1>WELCOME BACK <%=user.username%>
+    </h1>
+    <a href="/log-out">LOG OUT</a>
+    <% } else { %>
+      <p>Debug: <%= user %>
+      </p>
+      <form action="/log-in" method="post">
+        <label for="username">
+          Username
+          <input type="text" name="username" id="username">
+        </label>
+        <label for="password">
+          Password
+          <input type="password" name="password" id="password">
+        </label>
+        <button type="submit">Login</button>
+      </form>
+      <span><a href="/register">Click here</a> to sign up</span>
+      <hr>
+      <span><a href="/login">Click here</a> to log in</span>
+      <% } %>
 </body>
 
 </html>

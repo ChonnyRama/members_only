@@ -1,3 +1,4 @@
+//memberController.js
 const db = require('../db/queries')
 const { body, validationResult } = require('express-validator')
 const bcrypt = require("bcryptjs")
@@ -21,7 +22,7 @@ const validateMember = [
 
 
 async function memberIndexGet(req, res, next) {
-  res.render('index')
+  res.render('index', {user: req.user})
 }
 
 async function memberSignupGet(req, res, next) {
@@ -37,10 +38,17 @@ const memberSignupPost = [
         errors: errors.array()
       })
     }
+
+    let membership = 'regular'
+    if (req.body.passcode === 'Gengar') {
+      membership = 'special'
+    }
+
     bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
       await db.createMember({
         ...req.body,
-        password: hashedPassword
+        password: hashedPassword,
+        membership: membership,
       })
     })
     

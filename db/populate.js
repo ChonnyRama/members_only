@@ -25,12 +25,22 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 `;
 
+const CREATE_SESSIONS = `
+CREATE TABLE IF  NOT EXISTS sessions (
+  session_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  sid VARCHAR NOT NULL UNIQUE,
+  sess JSON NOT NULL,
+  expire TIMESTAMP(6) NOT NULL
+)
+`
+
 async function main() {
   console.log("seeding");
   const client = new Client()
   await client.connect()
   await client.query(CREATE_MEMBERS)
   await client.query(CREATE_MESSAGES)
+  await client.query(CREATE_SESSIONS)
   await client.end();
   console.log("done")
 }
