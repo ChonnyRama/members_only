@@ -48,7 +48,6 @@ passport.use(
       if (!match) {
         return done(null,false,{message: "incorrect password"})
       }
-      console.log('passwords match')
 
       return done(null,user)
     } catch (err) {
@@ -61,33 +60,24 @@ app.use(passport.session())
 
 
 passport.serializeUser((user, done) => {
-  console.log('serialize')
   done(null,user.id)
 })
 
-app.use((req, res, next) => {
-  console.log("Session on request:", req.session);
-  next();
-});
-
 passport.deserializeUser(async (id, done) => {
-  console.log("Deserializing user with ID:", id); // Debugging
   try {
     const { rows } = await pool.query("SELECT * FROM members WHERE id = $1", [id]);
     const user = rows[0];
-    console.log("User deserialized:", user); // Debugging
 
     done(null, user);
   } catch (err) {
-    console.error("Error deserializing user:", err);
     done(err);
   }
 });
 
 
 app.use((req, res, next) => {
-  console.log("req.user:", req.user)
   res.locals.currentUser = req.user || null;
+  console.log(req.user)
   next()
 })
 
@@ -97,6 +87,15 @@ app.post("/log-in",
     failureRedirect: "/"
   })
 )
+
+app.get("/log-out", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err)
+    }
+    res.redirect("/")
+  })
+})
 
 app.use('/', memberRouter)
 

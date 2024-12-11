@@ -22,7 +22,14 @@ const validateMember = [
 
 
 async function memberIndexGet(req, res, next) {
-  res.render('index', {user: req.user})
+  try {
+    const messages = await db.getAllMessages()
+    res.render('index', {user: res.locals.currentUser, messages: messages})
+  } catch (err) {
+    console.error('Error retrieving messages for rendering:', err)
+    next(err)
+  }
+
 }
 
 async function memberSignupGet(req, res, next) {
@@ -56,9 +63,35 @@ const memberSignupPost = [
   }
 ]
 
+async function membershipUpdateGet(req, res, next) {
+  res.render('member')
+}
+
+async function membershipUpdatePost(req, res, next) {
+  if (req.body.passcode === 'Gengar') {
+    await db.updateMember(res.locals.currentUser.username)
+    res.redirect("/")
+  } else {
+    res.redirect("/")
+  }
+}
+
+async function newMessageGet(req, res, next) {
+  res.render('newMessage')
+}
+
+async function newMessagePost(req,res,next) {
+  await db.createMessage(req.body, res.locals.currentUser)
+  res.redirect("/")
+}
+
 module.exports = {
   memberIndexGet,
   memberSignupGet,
-  memberSignupPost
+  memberSignupPost,
+  membershipUpdateGet,
+  membershipUpdatePost,
+  newMessageGet,
+  newMessagePost
 }
 

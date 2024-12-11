@@ -13,25 +13,53 @@
   <% if (user) { %>
     <h1>WELCOME BACK <%=user.username%>
     </h1>
-    <a href="/log-out">LOG OUT</a>
-    <% } else { %>
-      <p>Debug: <%= user %>
-      </p>
-      <form action="/log-in" method="post">
-        <label for="username">
-          Username
-          <input type="text" name="username" id="username">
-        </label>
-        <label for="password">
-          Password
-          <input type="password" name="password" id="password">
-        </label>
-        <button type="submit">Login</button>
-      </form>
-      <span><a href="/register">Click here</a> to sign up</span>
-      <hr>
-      <span><a href="/login">Click here</a> to log in</span>
-      <% } %>
+    <% if(user.membership==='regular' ) {%>
+      <div class="member-container">
+        <a href="/member-auth">Become a member here</a>
+        <a href="/log-out">LOG OUT</a>
+      </div>
+      <% } else { %>
+        <div class="member-container">
+          <h1>Glad to have you back!</h1>
+          <a href="/new-message"> Send a new message</a>
+          <a href="/log-out">LOG OUT</a>
+        </div>
+        <% } %>
+          <% } else { %>
+            <p>Debug: <%= user %>
+            </p>
+            <form action="/log-in" method="post">
+              <label for="username">
+                Username
+                <input type="text" name="username" id="username">
+              </label>
+              <label for="password">
+                Password
+                <input type="password" name="password" id="password">
+              </label>
+              <button type="submit">Login</button>
+            </form>
+            <span><a href="/register">Click here</a> to sign up</span>
+            <hr>
+            <span><a href="/login">Click here</a> to log in</span>
+
+            <% } %>
+              <h2>Message Board</h2>
+              <div class="board-container">
+                <% messages.forEach((message)=> { %>
+                  <div class="message">
+                    <span class="title">
+                      <%= message.title %>
+                    </span>
+                    <% if (user && user.membership==='member' ) { %>
+                      <span> by <%= message.username %> - <%= message.timestamp %></span>
+                      <% } %>
+                        <span>
+                          <%= message.message %>
+                        </span>
+                  </div>
+                  <% }) %>
+              </div>
 </body>
 
 </html>
