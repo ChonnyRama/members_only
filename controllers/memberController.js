@@ -64,7 +64,7 @@ const memberSignupPost = [
 ]
 
 async function membershipUpdateGet(req, res, next) {
-  res.render('member')
+  res.render('member', {user: res.locals.currentUser})
 }
 
 async function membershipUpdatePost(req, res, next) {
@@ -85,6 +85,20 @@ async function newMessagePost(req,res,next) {
   res.redirect("/")
 }
 
+async function adminUpdatePost(req, res, next) {
+    if (req.body.passcode === 'Gengargler') {
+    await db.setAdmin(res.locals.currentUser)
+    res.redirect("/")
+  } else {
+    res.redirect("/")
+  }
+}
+
+async function deleteMessagePost(req, res, next) {
+  await db.deleteMessage(req.body)
+  res.redirect("/")
+}
+
 module.exports = {
   memberIndexGet,
   memberSignupGet,
@@ -92,6 +106,8 @@ module.exports = {
   membershipUpdateGet,
   membershipUpdatePost,
   newMessageGet,
-  newMessagePost
+  newMessagePost,
+  adminUpdatePost,
+  deleteMessagePost
 }
 

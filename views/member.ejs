@@ -9,13 +9,23 @@
 
 <body>
   <h1>Members Only</h1>
-  <form action="/member-auth" method="post">
-    <label for="passcode">
-      Club Passcode
-      <input type="password" name="passcode" id="passcode">
-      <button type="submit">Submit</button>
-    </label>
-  </form>
+  <% if (user.membership==='regular' ) { %>
+    <form action="/member-auth" method="post">
+      <label for="passcode">
+        Club Passcode
+        <input type="password" name="passcode" id="passcode">
+        <button type="submit">Submit</button>
+      </label>
+    </form>
+    <%}else {%>
+      <form action="/admin-auth" method="post">
+        <label for="passcode">
+          Admin Passcode
+          <input type="password" name="passcode" id="passcode">
+          <button type="submit">Submit</button>
+        </label>
+      </form>
+      <%}%>
 
 </body>
 

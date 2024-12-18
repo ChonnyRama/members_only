@@ -53,9 +53,28 @@ async function getAllMessages() {
   
 }
 
+async function setAdmin(user) {
+  try {
+    await pool.query(`UPDATE members
+      SET admin = TRUE
+      WHERE username = $1`,[user.username])
+  } catch (err) {
+    console.error(err)
+  }
+}
+async function deleteMessage(body) {
+  try {
+    await pool.query('DELETE FROM messages WHERE id = $1', [body.messageId])
+  } catch (err) {
+    console.error('Error deleting message')
+  }
+}
+
 module.exports = {
   createMember,
   createMessage,
   updateMember,
-  getAllMessages
+  getAllMessages,
+  setAdmin,
+  deleteMessage
 }

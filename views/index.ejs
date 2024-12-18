@@ -21,8 +21,12 @@
       <% } else { %>
         <div class="member-container">
           <h1>Glad to have you back!</h1>
-          <a href="/new-message"> Send a new message</a>
-          <a href="/log-out">LOG OUT</a>
+
+          <% if (user.admin===0 || user.admin===null ) {%>
+            <a href="/member-auth">Become an admin</a>
+            <%}%>
+              <a href="/new-message"> Send a new message</a>
+              <a href="/log-out">LOG OUT</a>
         </div>
         <% } %>
           <% } else { %>
@@ -48,15 +52,28 @@
               <div class="board-container">
                 <% messages.forEach((message)=> { %>
                   <div class="message">
-                    <span class="title">
-                      <%= message.title %>
-                    </span>
-                    <% if (user && user.membership==='member' ) { %>
-                      <span> by <%= message.username %> - <%= message.timestamp %></span>
-                      <% } %>
-                        <span>
-                          <%= message.message %>
-                        </span>
+                    <div class="content">
+                      <span class="title">
+                        <%= message.title %>
+                      </span>
+                      <% if (user && user.membership==='member' ) { %>
+                        <span> by <%= message.username %> - <%= message.timestamp %></span>
+                        <% } else {%>
+                          <span>
+                            <%= message.timestamp %>
+                          </span>
+                          <%}%>
+                            <span>
+                              <%= message.message %>
+                            </span>
+                    </div>
+                    <% if (user.admin) {%>
+                      <form action="/delete-message" method="post">
+                        <input type="hidden" name="messageId" value="<%= message.id %>">
+                        <button type="submit">Delete</button>
+                      </form>
+                      <%}%>
+
                   </div>
                   <% }) %>
               </div>
